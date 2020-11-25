@@ -5,3 +5,19 @@
 #10.10.1.101        ---> 5.1    CONECTA            TACUBA
 #10.10.6.100        ---> 8.0    CONECTA            VERTIZ   
 #10.10.1.229        ---> S/N    CONECTA            OFICINA
+
+
+
+'''
+for index, item in enumerate(data[0]):
+    try:     
+        data2[0].index(item)
+        print('igual')
+    except:
+        print('')
+        print('el valor del item no se encuentra ')
+        print(item)
+        print('')
+        #q2 = "SELECT id FROM traslado where id='%s'" %item
+        #print(q2)
+'''

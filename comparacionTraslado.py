@@ -1,11 +1,12 @@
 import connections
+import schedule
+import time
+from datetime import datetime
 
 #q="""SELECT  s.id, s.nombre, count(s.id)as TOTAL FROM traslado t join sucursal s on(t.sucursal_id=s.id) where fecha >= '2020-11-23' GROUP by s.id"""
-q =  """SELECT  t.id, s.nombre FROM traslado t join sucursal s on(t.sucursal_id=s.id) where fecha >= '2020-11-23' and s.id='402880fc5e4ec411015e4ec64e70012e'"""
+q =  """SELECT  t.id, s.nombre FROM traslado t join sucursal s on(t.sucursal_id=s.id) where fecha >= '2020-11-23' """
+        #and s.id='402880fc5e4ec411015e4ec64e70012e'
 
-
-#q= "select * from SUCURSAL where nombre='tacuba'"
-uno = 'el registro existe '
 connections.cenCur.execute(q)
 connections.tacCur.execute(q)
 
@@ -23,47 +24,36 @@ for i in comp:
     print(q2)
 '''     
 
-
-
-for i in data2:
-    if i not in data:
+def  job():
+    now = datetime.now()
+    for i in data2:
         valor = i[0]
-        q2 = "SELECT * FROM traslado where id='%s'" %valor
-        mensaje = "REPLICANDO... %s"%valor
-        print(mensaje)
-    
-    else:
-        valor = i[0]
-        #print('existe----> '+ valor)
+        name = i[1]
+        if i not in data:
+            q2 = "SELECT * FROM traslado where id='%s'" %valor
+            connections.cenCur.execute(q2)
+            mensaje = "REPLICANDO... %s" %valor
+            print('*************************************************')
+            print('*')
+            print(mensaje,'a las' + now)
+            print('*')
+            print('*************************************************')
+        else:
+            valor = i[0]
+            name = i[1]
+            #print('existe----> '+ valor)
+            #print('en-------->'+ name)
+    print(' ')
+    print('===========================================')
+    print('')
+    print(len(data),len(data2),name, now)
+    print('')
+
+schedule.every(.2).minutes.do(job)
 
 
-#print(data)
-#print('=======================================================================================')
-#print(data2)
-
-#print(final_result)
-#print (final_result.difference(final_result2))
-
-'''
-
-
-
-for index, item in enumerate(data[0]):
-    try:     
-        data2[0].index(item)
-        print('igual')
-    except:
-        print('')
-        print('el valor del item no se encuentra ')
-        print(item)
-        print('')
-        #q2 = "SELECT id FROM traslado where id='%s'" %item
-        #print(q2)
-'''
-print('')
-print(len(data))
-print(len(data2))
-   
+while True:
+    schedule.run_pending()
 
 connections.tacuba.close()
 connections.central.close()
@@ -72,7 +62,3 @@ connections.andrade.close()
 connections.bolivar.close()
 connections.calle4.close()
 connections.vertiz.close()
-
-
-
-#pymysql.err.ProgrammingError: #ERROR EN LA QUERY
