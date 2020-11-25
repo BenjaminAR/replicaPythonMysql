@@ -29,12 +29,12 @@ for i in data2:
     if i not in data:
         valor = i[0]
         q2 = "SELECT * FROM traslado where id='%s'" %valor
-        mensaje = "REPLICANDO... "
-        print(q2)
+        mensaje = "REPLICANDO... %s"%valor
+        print(mensaje)
     
     else:
         valor = i[0]
-        print('existe----> '+ valor)
+        #print('existe----> '+ valor)
 
 
 #print(data)
